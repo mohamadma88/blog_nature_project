@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <body>
+       
+        <div class="tm-header">
+            <div class="container-fluid">
+                <div class="tm-header-inner">
+                    <a href="#" class="navbar-brand tm-site-name">Classic</a>
+                    
+                    <!-- navbar -->
+                    <nav class="navbar tm-main-nav">
+
+                        <button class="navbar-toggler hidden-md-up" type="button" data-toggle="collapse" data-target="#tmNavbar">
+                            &#9776;
+                        </button>
+                        
+                        <div class="collapse navbar-toggleable-sm" id="tmNavbar">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item active">
+                                    <a href="{% url 'home:home' %}" class="nav-link">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'nature_app:nature' %}" class="nav-link">Nature</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'blog_app:blog' %}" class="nav-link">Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'contact_us:contact' %}" class="nav-link">Contact</a>
+                                </li>
+                                 <li class="nav-item">
+
+                                     {% if request.user.is_authenticated %}
+                                         <div class="d-flex">
+                                            <a  class="nav-link">{{ request.user.first_name }}</a>
+                                         <a href="{% url 'account:logout' %}" class="bg-warning -align-left ">logout</a>
+                                         </div>
+                                     {% else %}
+                                         <a href="{% url 'account:login' %}" class="nav-link">login</a>
+                                     {% endif %} 
+                                </li>
+                            </ul>                        
+                        </div>
+
+                    </nav>  
+
+                </div>                                  
+            </div>            
+        </div>
+
+        <div class="tm-home-img-container">
+            <img src="{% static 'img/tm-home-img.jpg' %}" alt="Image" class="hidden-lg-up img-fluid">
+        </div>
+
+        <section class="tm-section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
+                        <h2 class="tm-gold-text tm-title">NATURE</h2>
+                        <p class="tm-subtitle"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for detail in detail %}
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+
+
+                        <div class="tm-content-box">
+                            <img src="{{ detail.img.url }}" alt="Image" class="tm-margin-b-20 img-fluid">
+                            <h4 class="tm-margin-b-20 tm-gold-text">{{ detail.title }}</h4>
+                            <p class="tm-margin-b-20">{{ detail.text }}</p>
+                            <a href="{% url 'blog_app:blog' %}" class="tm-btn text-uppercase">Detail</a>
+                        </div>
+
+
+                    </div>
+                    {% endfor %}
+                </div> <!-- row -->
+
+                <div class="row tm-margin-t-big">
+                    {% for main in main %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="tm-2-col-left">
+
+
+
+
+                            <h3 class="tm-gold-text tm-title">{{ main.title }}</h3>
+                            <p class="tm-margin-b-30">Vivamus accumsan blandit ligula. Sed lobortis efficitur sapien</p>
+                            <img src="{{ main.img.url }}" alt="Image" class="tm-margin-b-40 img-fluid">
+
+
+                            <p class="m-b-2">{{ main.text }}
+                            </p>
+                            <a href="{% url 'blog_app:blog' %}" class="tm-btn text-uppercase">Read More</a>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+
+                        <div class="tm-2-col-right">
+
+                            <div class="tm-2-rows-md-swap">
+                                <div class="tm-overflow-auto row tm-2-rows-md-down-2">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                        <h3 class="tm-gold-text tm-title">
+                                            Categories
+                                        </h3>
+                                        <nav>
+                                            {% for category in category %}
+
+                                            <ul class="nav">
+                                                <li><a href="{% url 'nature_app:nature' %}" class="tm-text-link">{{ category.title }}</a></li>
+                                            </ul>
+                                        </nav>
+                                        {% endfor %}
+                                    </div> <!-- col -->
+
+                                </div>                        
+                                
+                                <div class="row tm-2-rows-md-down-1 tm-margin-t-mid">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <h3 class="tm-gold-text tm-title tm-margin-b-30">Related Posts</h3>
+                                            {% for recently_post in recently_post %}
+                                        <div class="media tm-related-post">
+                                          <div class="media-left media-middle">
+                                            <a href="#">
+                                              <img class="media-object" src="{{ recently_post.img.url }}" alt="Generic placeholder image">
+                                            </a>
+                                          </div>
+
+                                          <div class="media-body">
+                                            <a href="#"><h4 class="media-heading tm-gold-text tm-margin-b-15">{{ recently_post.title }}</h4></a>
+                                            <p class="tm-small-font tm-media-description">{{ recently_post.text }}</p>
+                                          </div>
+                                            {% endfor %}
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                </div>    
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div> <!-- row -->
+
+            </div>
+        </section>
+        
+       {% endblock %}
